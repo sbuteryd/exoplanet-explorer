@@ -34,25 +34,31 @@ Instructions:
    */
   function get(url) {
 
-    new new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
           var req = new XMLHttpRequest();
           req.open('GET', url);
           req.onload = function() {
             if (req.status === 200) {
+              resolve(this.responseText);
               // resolve(this.responseText)
               // It worked!
               // You'll want to resolve with the data from req.response
               console.log(req.response)
             } else {
+              reject(req.statusText)
               // It failed :(
               // Be nice and reject with req.statusText
             }
           };
           req.onerror = function() {
+            reject('Net work error')
             // It failed :(
             // Pass a 'Network Error' to reject
           };
-          req.send();
+          req.send()
+          // req.send().then(function () {
+          //
+          // });
 
     });
     /*
@@ -68,7 +74,12 @@ Instructions:
     You'll need to add a .then and a .catch. Pass the response to addSearchHeader on resolve or
     pass 'unknown' to addSearchHeader if it rejects.
      */
-    get('../data/earth-like-results.json').then(addSearchHeader)
 
+    get('../data/earth-like-results.json').then(function (value) {
+      addSearchHeader(value)
+    })
+      .catch(function (value) {
+        addSearchHeader(value)
+      })
   });
 })(document);
