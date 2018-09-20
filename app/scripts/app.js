@@ -39,26 +39,24 @@ Instructions:
           req.open('GET', url);
           req.onload = function() {
             if (req.status === 200) {
-              resolve(this.responseText);
+              resolve(this.response);
               // resolve(this.responseText)
               // It worked!
               // You'll want to resolve with the data from req.response
               console.log(req.response)
             } else {
-              reject(req.statusText)
+              reject(Error(req.statusText))
+              console.log(req.statusText)
               // It failed :(
               // Be nice and reject with req.statusText
             }
           };
-          req.onerror = function() {
-            reject('Net work error')
+          // req.onerror = function() {
+          //   reject(Error('Net work error'))
             // It failed :(
             // Pass a 'Network Error' to reject
-          };
+          // };
           req.send()
-          // req.send().then(function () {
-          //
-          // });
 
     });
     /*
@@ -75,11 +73,12 @@ Instructions:
     pass 'unknown' to addSearchHeader if it rejects.
      */
 
-    get('../data/earth-like-results.json').then(function (value) {
-      addSearchHeader(value)
+    get('.f./data/earth-like-results.json').then(function (response) {
+      addSearchHeader(response)
     })
-      .catch(function (value) {
-        addSearchHeader(value)
+      .catch(function (error) {
+        addSearchHeader('unkown');
+        console.log(error)
       })
   });
 })(document);
